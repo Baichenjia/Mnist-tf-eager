@@ -43,8 +43,6 @@ def train(model, dataset, test_data, test_labels,
     for epoch in range(epoches):
         losses = []
         for (batch, (inp, targ)) in enumerate(dataset):
-            loss = model.loss_fn(inp, targ)
-            # print(loss)
             with tf.GradientTape() as tape:
                 loss = model.loss_fn(inp, targ)
             gradients = tape.gradient(loss, model.trainable_variables)
