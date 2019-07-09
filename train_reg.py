@@ -15,13 +15,13 @@ class CNN(tf.keras.Model):
         self.flatten = tf.keras.layers.Flatten(input_shape=(28, 28))
         self.dense1 = tf.keras.layers.Dense(128, activation=tf.nn.relu, name="Dense1")
         self.dense2 = tf.keras.layers.Dense(128, activation=tf.nn.relu, name="Dense2")
-        self.dense3 = tf.keras.layers.Dense(10, activation=tf.nn.softmax, name="Softmax")
+        self.logits = tf.keras.layers.Dense(10, activation=None, name="logits")
 
     def predict(self, x):
         x = self.flatten(x)
         x = self.dense1(x)
         x = self.dense2(x)
-        y = self.dense3(x)
+        y = self.logits(x)
         return y
 
     def loss_fn(self, X, y):
