@@ -15,14 +15,14 @@ class CNN(tf.keras.Model):
         self.flatten = tf.keras.layers.Flatten(input_shape=(28, 28))
         self.dense1 = tf.keras.layers.Dense(128, activation=tf.nn.relu, name="Dense1")
         self.dense2 = tf.keras.layers.Dense(128, activation=tf.nn.relu, name="Dense2")
-        self.dense3 = tf.keras.layers.Dense(10, activation=tf.nn.softmax, name="Softmax")
+        self.logits = tf.keras.layers.Dense(10, activation=None, name="logits")
 
     def predict(self, x):
         x = self.flatten(x)
         x = self.dense1(x)
         x = self.dense2(x)
-        y = self.dense3(x)
-        return y
+        logits = self.logits(x)
+        return logits
 
     def loss_fn(self, X, y):
         """"""
@@ -44,6 +44,7 @@ def train(model, dataset, test_data, test_labels,
         losses = []
         for (batch, (inp, targ)) in enumerate(dataset):
             with tf.GradientTape() as tape:
+                print(targ)
                 loss = model.loss_fn(inp, targ)
             gradients = tape.gradient(loss, model.trainable_variables)
             # print("loss: ", loss.numpy(), ",\tacc: ", model.acc_fn(inp, targ)*100, "%")
